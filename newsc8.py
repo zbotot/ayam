@@ -11,7 +11,7 @@ from googletrans import Translator
 from humanfriendly import format_timespan, format_size, format_number, format_length
 import time, random, sys, json, codecs, threading, glob, re, string, os, requests, six, ast, pytz, urllib, urllib3, urllib.parse, traceback, atexit, subprocess
 
-ririn = LINE("EtKtkL176FshhP9PKaV6.7kqscP17dKQEF08Bg5AKnG.XNdQINxpbD1oN9msScvYFDrCkFFwTtDiaAH4+0uKmNg=")
+ririn = LINE("Eve16JwCcBsrTYfusNi5.fj0S/qYKVWGRwpehA8QPbq./EpXPM8XdmUTi+mYh6VKpqyctFD+PnBlxQZbJo1uwxQ=")
 #ririn = LINE("")
 ririnMid = ririn.profile.mid
 ririnProfile = ririn.getProfile()
@@ -286,34 +286,65 @@ def delete_log():
                 ririn.deleteFile(msg_dict[data]["path"])
             del msg_dict[data]
             
-def sendMention(to, text="", mids=[]):
-    arrData = ""
-    arr = []
-    mention = "@dee "
-    if mids == []:
-        raise Exception("Invalid mids")
-    if "@!" in text:
-        if text.count("@!") != len(mids):
-            raise Exception("Invalid mids")
-        texts = text.split("@!")
-        textx = ""
-        for mid in mids:
-            textx += str(texts[mids.index(mid)])
-            slen = len(textx)
-            elen = len(textx) + 15
-            arrData = {'S':str(slen), 'E':str(elen - 4), 'M':mid}
+def sendMention(to, mid, firstmessage, lastmessage):
+    try:
+        arrData = ""
+        text = "%s " %(str(firstmessage))
+        arr = []
+        mention = "@x "
+        slen = str(len(text))
+        elen = str(len(text) + len(mention) - 1)
+        arrData = {'S':slen, 'E':elen, 'M':mid}
+        arr.append(arrData)
+        text += mention + str(lastmessage)
+        ririn.sendMessage(to, text, {'MENTION': str('{"MENTIONEES":' + json.dumps(arr) + '}')}, 0)
+    except Exception as error:
+        logError(error)
+        ririn.sendMessage(to, "[ INFO ] Error :\n" + str(error))
+
+def sendMessage(to, Message, contentMetadata={}, contentType=0):
+    mes = Message()
+    mes.to, mes._from = to, profile.mid
+    mes.text = text
+    mes.contentType, mes.contentMetadata = contentType, contentMetadata
+    if to not in messageReq:
+        messageReq[to] = -1
+    messageReq[to] += 1
+
+def sendMessageWithMention(to, mid):
+    try:
+        aa = '{"S":"0","E":"3","M":'+json.dumps(mid)+'}'
+        text_ = '@x '
+        line.sendMessage(to, text_, contentMetadata={'MENTION':'{"MENTIONEES":['+aa+']}'}, contentType=0)
+    except Exception as error:
+        logError(error)
+
+        
+def mentionMembers(to, mid):
+    try:
+        arrData = ""
+        textx = "╔══[Mention {} User]\n╠ ".format(str(len(mid)))
+        arr = []
+        no = 1
+        for i in mid:
+            mention = "@x\n"
+            slen = str(len(textx))
+            elen = str(len(textx) + len(mention) - 1)
+            arrData = {'S':slen, 'E':elen, 'M':i}
             arr.append(arrData)
             textx += mention
-        textx += str(texts[len(mids)])
-    else:
-        textx = ""
-        slen = len(textx)
-        elen = len(textx) + 15
-        arrData = {'S':str(slen), 'E':str(elen - 4), 'M':mids[0]}
-        arr.append(arrData)
-        textx += mention + str(text)
-    ririn.sendMessage(to, textx, {'MENTION': str('{"MENTIONEES":' + json.dumps(arr) + '}')}, 0)
-
+            if no < len(mid):
+                no += 1
+                textx += "╠ "
+            else:
+                try:
+                    textx += "╚══[ {} ]".format(str(ririn.getGroup(to).name))
+                except:
+                    pass
+        ririn.sendMessage(to, textx, {'MENTION': str('{"MENTIONEES":' + json.dumps(arr) + '}')}, 0)
+    except Exception as error:
+        logError(error)
+        ririn.sendMessage(to, "[ INFO ] Error :\n" + str(error))
 def command(text):
     pesan = text.lower()
     if wait["setKey"] == True:
