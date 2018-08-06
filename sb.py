@@ -17,7 +17,7 @@ botStart = time.time()
 #line = LINE()
 #line = LINE("AuthToken")
 #line = LINE("Email","Password")
-line = LINE("Eve16JwCcBsrTYfusNi5.fj0S/qYKVWGRwpehA8QPbq./EpXPM8XdmUTi+mYh6VKpqyctFD+PnBlxQZbJo1uwxQ=")
+line = LINE("EvTS2oby6YPMbuWGsZb8.yAM1ZO3J61gOwuemMdtLYa.NYpAUwfsDoveZRrvB2RGI0vloyo5OzqkByoMLfRi9lg=")
 line.log("Auth Token : " + str(line.authToken))
 channelToken = line.getChannelResult()
 line.log("Channel Token : " + str(channelToken))
@@ -866,7 +866,7 @@ def lineBot(op):
                            line.sendMessage(msg.to,"Sambutan Di Nonaktifkan(　＾∇＾)")
 
 #==============================================================================#          
-                elif text.lower() == 'mention':
+                elif text.lower() == 'Tag':
                                 group = line.getGroup(msg.to)
                                 nama = [contact.mid for contact in group.members]
                                 k = len(nama)//20
