@@ -2505,31 +2505,16 @@ def lineBot(op):
                     if text is not None:
                         line.sendMessage(msg.to,text)
                 if msg.contentType == 0 and sender not in lineMID and msg.toType == 2:
-                    
-		if 'MENTION' in msg.contentMetadata.keys() != None:
-                 if settings["detectMention"] == True:          
-                    contact = line.getContact(msg.from_)
-                    cName = contact.displayName
-                    balas = ["Woii " + cName + ", Dasar Jones Ngetag Mulu!"]
-                    balas1 = "Ini Foto Sii Jones Yang Suka Ngetag. . ."
-                    ret_ = random.choice(balas)
-                    image = "http://dl.profile.line-cdn.net/" + contact.pictureStatus
-                    name = re.findall(r'@(\w+)', msg.text)
-                    mention = ast.literal_eval(msg.contentMetadata['MENTION'])
-                    mentionees = mention['MENTIONEES']
-                    for mention in mentionees:
-                           if mention['M'] in Bots:
-                                  line.sendText(msg.to,ret_)
-                                  line.sendText(msg.to,balas1)
-                                  line.sendImageWithURL(msg.to,image)
-                                  msg.contentType = 7   
-                                  msg.text = None
-                                  msg.contentMetadata = {
-                                                       "STKID": "11764508",
-                                                       "STKPKGID": "6641",
-                                                       "STKVER": "1" }
-                                  line.sendMessage(msg)                                
-                                  break
+                    if 'MENTION' in msg.contentMetadata.keys()!= None:
+                        names = re.findall(r'@(\w+)', text)
+                        mention = ast.literal_eval(msg.contentMetadata['MENTION'])
+                        mentionees = mention['MENTIONEES']
+                        lists = []
+                        for mention in mentionees:
+                            if lineMID in mention["M"]:
+                              if settings["detectMention"] == True:
+                                 sendMention(receiver, sender, "", " \nʜᴀᴅɪʀ ʙᴏs \nᴀᴅᴀ ʏᴀɴɢ ᴘᴇʀʟᴜ ᴅɪʙᴀɴᴛɪɴɢ")
+
         if op.type == 17:
            print ("MEMBER JOIN TO GROUP")
            if settings["Sambutan"] == True:
