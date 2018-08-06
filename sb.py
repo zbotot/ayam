@@ -2506,14 +2506,18 @@ def lineBot(op):
                         line.sendMessage(msg.to,text)
                 if msg.contentType == 0 and sender not in lineMID and msg.toType == 2:
                     if 'MENTION' in msg.contentMetadata.keys()!= None:
-                        names = re.findall(r'@(\w+)', text)
-                        mention = ast.literal_eval(msg.contentMetadata['MENTION'])
-                        mentionees = mention['MENTIONEES']
-                        lists = []
-                        for mention in mentionees:
-                            if lineMID in mention["M"]:
-                              if settings["detectMention"] == True:
-                                 sendMention(receiver, sender, "", " \nнα∂ιя вσѕ ")
+                            names = re.findall(r'@(\w+)', text)
+                            mention = ast.literal_eval(msg.contentMetadata['MENTION'])
+                            mentionees = mention['MENTIONEES']
+                            lists = []
+                            for mention in mentionees:
+                                if lineMid in mention["M"]:
+                                    if wait["detectMention"] == True:
+                                    	line.sendChatChecked(msg._from,msg.id)
+                                    	contact = line.getContact(msg._from)
+                                    	line.sendImageWithURL(msg._from, "http://dl.profile.line-cdn.net{}".format(contact.picturePath))
+                                    	sendMention(sender, "ᴏɪ ᴍʙʟᴏ @!      ,\nɴɢᴀᴘᴀɪɴ ᴛᴀɢ ᴛᴀɢ ɢᴡ", [sender])
+                                    break
 
         if op.type == 17:
            print ("MEMBER JOIN TO GROUP")
