@@ -866,8 +866,8 @@ def lineBot(op):
                            line.sendMessage(msg.to,"Sambutan Di Nonaktifkan(　＾∇＾)")
 
 #==============================================================================#          
-                elif cmd == 'mention':
-                                group = ririn.getGroup(msg.to)
+                elif text.lower() == 'mention':
+                                group = line.getGroup(msg.to)
                                 nama = [contact.mid for contact in group.members]
                                 k = len(nama)//20
                                 for a in range(k+1):
@@ -878,8 +878,8 @@ def lineBot(op):
                                         b.append({"S":str(s), "E" :str(s+6), "M":i.mid})
                                         s += 7
                                         txt += u'@Zero \n'
-                                    ririn.sendMessage(to, text=txt, contentMetadata={u'MENTION': json.dumps({'MENTIONEES':b})}, contentType=0)
-                                    ririn.sendMessage(to, "Total {} Mention".format(str(len(nama))))
+                                    line.sendMessage(to, text=txt, contentMetadata={u'MENTION': json.dumps({'MENTIONEES':b})}, contentType=0)
+                                    line.sendMessage(to, "Total {} Mention".format(str(len(nama))))
 #===================================================================#
                 elif text.lower() == 'changepictureprofile':
                             settings["changePicture"] = True
